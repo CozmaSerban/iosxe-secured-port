@@ -8,7 +8,15 @@ Steps in order to implement this feature.
 1. Enable iox service - link: https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/prog/configuration/172/b_172_programmability_cg/guest_shell.html<img width="819" alt="image" src="https://github.com/CozmaSerban/iosxe-secured-port/assets/10424327/d5d6179a-6db1-4c26-84d5-36641f2fd119">
 2. Enable guestshell container - link: https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/prog/configuration/172/b_172_programmability_cg/guest_shell.html<img width="1110" alt="image" src="https://github.com/CozmaSerban/iosxe-secured-port/assets/10424327/ade71cdc-e1bf-4fc1-9fbc-ac55a777712f">
 3. Copy the script to the containter.
-4. Create the EEM Applet
+4. Create the following EEM Applet
+   ```
+   event manager applet IF_DOWN
+     event syslog pattern " %LINEPROTO-5-UPDOWN: Line protocol on Interface Gig.*down"
+     action 0.0 regexp "Interface ([^,]+)" "$_syslog_msg" match intf
+     action 1.0 cli command "enable"
+     action 2.0 cli command "guestshell run python3 app.py $intf"
+     action 3.0 cli command "end"
+   ```
 
 Useful commands:
 
