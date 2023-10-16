@@ -1,6 +1,0 @@
-event manager applet IF_DOWN
- event syslog pattern " %LINEPROTO-5-UPDOWN: Line protocol on Interface Gig.*down"
- action 0.0 regexp "Interface ([^,]+)" "$_syslog_msg" match intf
- action 1.0 cli command "enable"
- action 2.0 cli command "guestshell run python3 app.py $intf"
- action 3.0 cli command "end"
